@@ -1,5 +1,6 @@
 # rc_netty
-Netty学习笔记
+[Netty](https://github.com/netty/netty)：Netty is an asynchronous event-driven network application framework for rapid development of maintainable high performance protocol servers & clients.
+![components](http://netty.io/images/components.png)
 
 ## Netty的使用场景
 * 作为RPC通讯框架或通信协议，通讯的库，实现远程过程的调用（基于socket方式）

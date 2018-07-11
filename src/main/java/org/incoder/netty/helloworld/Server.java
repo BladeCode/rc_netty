@@ -20,7 +20,7 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.sctp.nio.NioSctpServerChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /**
  * Description.
@@ -41,9 +41,9 @@ public class Server {
             // Netty启动服务端的类
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup)
-                    .channel(NioSctpServerChannel.class)
+                    .channel(NioServerSocketChannel.class)
                     .childHandler(new ServerInitializer());
-            ChannelFuture channelFuture = serverBootstrap.bind(9999).sync();
+            ChannelFuture channelFuture = serverBootstrap.bind(2222).sync();
             // 关闭
             channelFuture.channel().closeFuture().sync();
         } finally {

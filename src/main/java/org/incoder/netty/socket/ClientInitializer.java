@@ -14,25 +14,31 @@
  * limitations under the License.
  */
 
-package org.incoder.netty.helloworld;
+package org.incoder.netty.socket;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.codec.string.StringEncoder;
+import io.netty.util.CharsetUtil;
 
 /**
- * 自定义服务初始化.
+ * Description.
  *
  * @author : Jerry xu
- * @date : 7/10/2018 10:11 PM
+ * @date : 7/16/2018 12:16 AM
  */
-public class ServerInitializer extends ChannelInitializer<SocketChannel> {
-
+public class ClientInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-        pipeline.addLast("httpServerCodec", new HttpServerCodec());
-        pipeline.addLast("httpServerHandler", new HttpServerHandler());
+
+        pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
+        pipeline.addLast(new LengthFieldPrepender(4));
+        pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
+        pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
+        pipeline.addLast(new ClientHandler());
     }
 }

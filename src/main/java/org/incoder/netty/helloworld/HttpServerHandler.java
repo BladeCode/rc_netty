@@ -27,13 +27,20 @@ import java.net.URI;
 
 
 /**
- * Description.
+ * 自定义服务处理器.
  *
  * @author : Jerry xu
  * @date : 7/10/2018 10:14 PM
  */
 public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
 
+    /**
+     * 读取客户端发送过来的请求，并向客户端发送响应
+     *
+     * @param ctx 处理上下文
+     * @param msg Http对象
+     * @throws Exception 异常
+     */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
 
@@ -44,15 +51,21 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
             HttpRequest httpRequest = (HttpRequest) msg;
             System.out.println("请求方法名称" + ((HttpRequest) msg).method().name());
             URI uri = new URI(httpRequest.uri());
+            // 过虑掉favicon.icon请求
             if ("/favicon.ico".equals(uri.getPath())) {
                 System.out.println("请求favicon.ico");
                 return;
             }
+            // 先客户端返回的内容
             ByteBuf content = Unpooled.copiedBuffer("Hello World", CharsetUtil.UTF_8);
             FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, content);
+            // 设置返回header信息
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
             response.headers().set(HttpHeaderNames.CONTENT_LENGTH, content.readableBytes());
+            // 返回给客户端
             ctx.writeAndFlush(response);
+            // 关闭链接
+            ctx.channel().close();
         }
     }
 

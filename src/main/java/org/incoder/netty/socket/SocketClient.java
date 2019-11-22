@@ -16,34 +16,32 @@
 
 package org.incoder.netty.socket;
 
-import io.netty.bootstrap.ServerBootstrap;
+import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 
 /**
- * Description.
+ * 客户端.
  *
  * @author : Jerry xu
- * @date : 7/15/2018 11:54 PM
+ * @date : 7/16/2018 12:10 AM
  */
-public class Server {
+public class SocketClient {
 
     public static void main(String[] args) throws InterruptedException {
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        // 因为客户端，只需要一个时间循环组来和服务端建立连接
+        EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 
         try {
-            ServerBootstrap serverBootstrap = new ServerBootstrap();
-            serverBootstrap.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .childHandler(new ServerInitializer());
-            ChannelFuture channelFuture = serverBootstrap.bind(3333).sync();
-            channelFuture.channel().closeFuture();
+            Bootstrap bootstrap = new Bootstrap();
+            bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class).handler(new SocketClientInitializer());
+
+            ChannelFuture channelFuture = bootstrap.connect("localhost", 3333).sync();
+            channelFuture.channel().closeFuture().sync();
         } finally {
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
+            eventLoopGroup.shutdownGracefully();
         }
     }
 }

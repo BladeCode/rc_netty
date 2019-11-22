@@ -1,4 +1,4 @@
-# rc_netty
+# rc-cluster-netty
 [Netty](https://github.com/netty/netty)：Netty is an asynchronous event-driven network application framework for rapid development of maintainable high performance protocol servers & clients.(Netty是一个异步的，事件驱动的网络应用程序框架，用于快速开发可维护的高性能协议服务器和客户端)
 
 ![components](http://netty.io/images/components.png)
@@ -14,6 +14,18 @@
 * Netty Version：4.1.25.Final
 
 > RoadMap 和详细知识笔记请查看[Wiki](https://github.com/RootCluster/rc_netty/wiki)
+
+项目结构，请按照如下 **顺序进行** 学习
+
+```
+rc-cluster-netty
+    ├── http            # 1. 基于 HTTP 的 netty 应用
+    ├── socket          # 2. 基于 socket 的 netty 应用
+    ├── chat            # 3. 
+    ├── heartbeat       # 4. 
+    ├── websocket       # 4. 
+    └── ……
+```
 
 ## License
 ```

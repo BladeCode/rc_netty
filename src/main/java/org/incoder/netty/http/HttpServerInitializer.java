@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.incoder.netty.helloworld;
+package org.incoder.netty.http;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -27,7 +27,7 @@ import io.netty.handler.codec.http.HttpServerCodec;
  * @author : Jerry xu
  * @date : 7/10/2018 10:11 PM
  */
-public class ServerInitializer extends ChannelInitializer<SocketChannel> {
+public class HttpServerInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {

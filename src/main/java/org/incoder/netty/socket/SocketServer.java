@@ -14,38 +14,38 @@
  * limitations under the License.
  */
 
-package org.incoder.netty.helloworld;
+package org.incoder.netty.socket;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LoggingHandler;
 
 /**
- * Description.
+ * 服务器.
  *
  * @author : Jerry xu
- * @date : 7/10/2018 10:01 PM
+ * @date : 7/15/2018 11:54 PM
  */
-public class Server {
+public class SocketServer {
 
     public static void main(String[] args) throws InterruptedException {
-        // 事件循环组
-        // bossGroup接收客户端的连接，但不对链接做任何处理，接收到的链接转给workerGroup
         EventLoopGroup bossGroup = new NioEventLoopGroup();
-        // workerGroup链接的后续处理，如：获取链接的参数，进行业务处理，返回给客户端
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
-            // Netty启动服务端的类
+            // handler() 与 childHandler() 的区别
+            // 服务端可以使用 handler() 或者 childHandler()，而对于客户端，一般只使用handler()
+            // handler()对于处理的 bossGroup 相关的信息，比如链接后，输出日志
+            // childHandler() 是指连接丢给 workerGroup 之后，对 workerGroup 的 NIO 线程作用
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    // 自定义的处理器
-                    .childHandler(new ServerInitializer());
-            ChannelFuture channelFuture = serverBootstrap.bind(2222).sync();
-            // 关闭
+                    .handler(new LoggingHandler())
+                    .childHandler(new SocketServerInitializer());
+            ChannelFuture channelFuture = serverBootstrap.bind(3333).sync();
             channelFuture.channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();

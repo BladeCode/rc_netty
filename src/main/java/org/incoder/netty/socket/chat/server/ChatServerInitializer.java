@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Jerry xu Open Source Project
+ * Copyright (C) 2019 The Jerry xu Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,34 +14,34 @@
  * limitations under the License.
  */
 
-package org.incoder.netty.socket;
+package org.incoder.netty.socket.chat.server;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
 
 /**
- * Description.
- *
  * @author : Jerry xu
- * @date : 7/15/2018 11:59 PM
+ * @date : 2019/11/19  10:25
  */
-public class ServerInitializer extends ChannelInitializer<SocketChannel> {
+public class ChatServerInitializer extends ChannelInitializer<SocketChannel> {
+
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
+
         ChannelPipeline pipeline = ch.pipeline();
-
-        pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
-        pipeline.addLast(new LengthFieldPrepender(4));
+        // 根据一定的分隔符对消息进行解码
+        pipeline.addLast(new DelimiterBasedFrameDecoder(4096, Delimiters.lineDelimiter()));
+        // 字符串解码器
         pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
+        // 字符串编码器
         pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
-        // 自定义
-        pipeline.addLast(new ServerHandler());
-
+        // 自定义处理器
+        pipeline.addLast(new ChatServerHandler());
     }
 }

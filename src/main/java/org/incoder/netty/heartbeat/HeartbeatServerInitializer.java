@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Jerry xu Open Source Project
+ * Copyright (C) 2019 The Jerry xu Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,27 @@
  * limitations under the License.
  */
 
-package org.incoder.netty.socket;
+package org.incoder.netty.heartbeat;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.handler.codec.string.StringEncoder;
-import io.netty.util.CharsetUtil;
+import io.netty.handler.timeout.IdleStateHandler;
+
+import java.util.concurrent.TimeUnit;
 
 /**
- * Description.
- *
  * @author : Jerry xu
- * @date : 7/16/2018 12:16 AM
+ * @date : 2019/11/19  14:14
  */
-public class ClientInitializer extends ChannelInitializer<SocketChannel> {
+public class HeartbeatServerInitializer extends ChannelInitializer<SocketChannel> {
+
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
+        // netty 提供的一个空闲状态检查的 handler（IdleStateHandler）
+        pipeline.addLast(new IdleStateHandler(5, 7, 10, TimeUnit.SECONDS));
+        pipeline.addLast(new HeartbeatServerHandler());
 
-        pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
-        pipeline.addLast(new LengthFieldPrepender(4));
-        pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
-        pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
-        pipeline.addLast(new ClientHandler());
     }
 }

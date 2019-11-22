@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Jerry xu Open Source Project
+ * Copyright (C) 2019 The Jerry xu Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,39 @@
  * limitations under the License.
  */
 
-package org.incoder.netty.socket;
+package org.incoder.netty.heartbeat;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
+import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 /**
- * Description.
- *
  * @author : Jerry xu
- * @date : 7/16/2018 12:10 AM
+ * @date : 2019/11/22  05:54
  */
-public class Client {
+public class HeartbeatClient {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 
         try {
             Bootstrap bootstrap = new Bootstrap();
-            bootstrap.group(eventLoopGroup).channel(NioServerSocketChannel.class).handler(new ClientInitializer());
+            bootstrap.group(eventLoopGroup)
+                    .channel(NioSocketChannel.class)
+                    .handler(new HeartbeatClientInitializer());
 
-            ChannelFuture channelFuture = bootstrap.connect("localhost", 4444).sync();
-            channelFuture.channel().closeFuture();
+            Channel channel = bootstrap.connect("localhost", 4321).sync().channel();
+            // 不断地读取用户在控制台输入的内容
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            // 死循环
+            for (; ; ) {
+                channel.writeAndFlush(br.readLine() + "\r\n");
+            }
         } finally {
             eventLoopGroup.shutdownGracefully();
         }

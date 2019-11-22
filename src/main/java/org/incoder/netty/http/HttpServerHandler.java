@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.incoder.netty.helloworld;
+package org.incoder.netty.http;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -56,12 +56,14 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
                 System.out.println("请求favicon.ico");
                 return;
             }
-            // 先客户端返回的内容
+            // 构建向客户端返回的内容
             ByteBuf content = Unpooled.copiedBuffer("Hello World", CharsetUtil.UTF_8);
             FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, content);
             // 设置返回header信息
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
             response.headers().set(HttpHeaderNames.CONTENT_LENGTH, content.readableBytes());
+            // 调用 write() 方法，内容不会返回给客户端，而是被放在了缓冲区
+            // ctx.write(response);
             // 返回给客户端
             ctx.writeAndFlush(response);
             // 关闭链接
@@ -69,33 +71,44 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    // 提供的常用回调函数
+    ///////////////////////////////////////////////////////////////////////////
+
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channel active");
+        System.out.println("通道连接处于活动状态，channel active");
         super.channelActive(ctx);
     }
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channel registered");
+        System.out.println("服务器注册，channel registered");
         super.channelRegistered(ctx);
     }
 
-    @Override
-    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("handler added");
-        super.handlerAdded(ctx);
-    }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channel inactive");
+        System.out.println("通道连接处于不活动状态，channel inactive");
         super.channelInactive(ctx);
     }
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channel unregistered");
+        System.out.println("服务器取消注册，channel unregistered");
         super.channelUnregistered(ctx);
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("客户端与服务器之间建立好连接，handlerAdded()");
+        super.handlerAdded(ctx);
+    }
+
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("失去连接");
+        super.handlerRemoved(ctx);
     }
 }

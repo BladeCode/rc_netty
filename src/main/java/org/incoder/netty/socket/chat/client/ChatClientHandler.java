@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Jerry xu Open Source Project
+ * Copyright (C) 2019 The Jerry xu Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,21 @@
  * limitations under the License.
  */
 
-package org.incoder.netty.socket;
+package org.incoder.netty.socket.chat.client;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-import java.util.UUID;
-
 /**
- * Description.
- *
  * @author : Jerry xu
- * @date : 7/16/2018 12:04 AM
+ * @date : 2019/11/19  13:35
  */
-public class ServerHandler extends SimpleChannelInboundHandler<String> {
+public class ChatClientHandler extends SimpleChannelInboundHandler<String> {
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-        System.out.println("远程地址：" + ctx.channel().remoteAddress());
-
-        ctx.channel().writeAndFlush("from server:" + UUID.randomUUID());
+        // server 端返回的数据
+        System.out.println(msg);
     }
 
     @Override

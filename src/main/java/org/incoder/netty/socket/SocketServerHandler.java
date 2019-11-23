@@ -37,10 +37,11 @@ public class SocketServerHandler extends SimpleChannelInboundHandler<String> {
 
         // 方法：writeAndFlush() = write() + flush()
         // write()：写
-        // flush()：把缓存清理掉
-        // writeAndFlush()：写并且把缓存清理掉，常用该方法
+        // flush()：把缓冲清理掉
+        // writeAndFlush()：写并且把缓冲清理掉，常用该方法
         ctx.channel().writeAndFlush("来之服务端的响应！" + UUID.randomUUID());
     }
+
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

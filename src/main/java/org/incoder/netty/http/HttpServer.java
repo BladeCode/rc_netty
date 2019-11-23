@@ -32,9 +32,9 @@ public class HttpServer {
 
     public static void main(String[] args) throws InterruptedException {
         // 事件循环组
-        // bossGroup接收客户端的连接，但不对链接做任何处理，接收到的链接转给workerGroup
+        // bossGroup接收客户端的连接，但不对连接做任何处理，接收到的连接转给workerGroup
         EventLoopGroup bossGroup = new NioEventLoopGroup();
-        // workerGroup链接的后续处理，如：获取链接的参数，进行业务处理，返回给客户端
+        // workerGroup连接的后续处理，如：获取连接的参数，进行业务处理，返回给客户端
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {

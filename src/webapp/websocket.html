@@ -53,7 +53,7 @@
         };
 
         socket.onclose = function (event) {
-            var ta = document.getElementById("responseText");
+            const ta = document.getElementById("responseText");
             ta.value = "连接关闭！\n";
         }
     } else {

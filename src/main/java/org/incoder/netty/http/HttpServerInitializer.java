@@ -33,6 +33,7 @@ public class HttpServerInitializer extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
         pipeline.addLast("httpServerCodec", new HttpServerCodec());
+        // 自定义服务处理器
         pipeline.addLast("httpServerHandler", new HttpServerHandler());
     }
 }

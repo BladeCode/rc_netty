@@ -44,8 +44,10 @@ public class ChatClient {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             // 死循环
             for (; ; ) {
+                // 当读取控制台输入的内容长度大于 0 时发送消息
                 channel.writeAndFlush(br.readLine() + "\r\n");
             }
+
         } finally {
             eventLoopGroup.shutdownGracefully();
         }

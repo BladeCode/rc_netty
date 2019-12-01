@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package org.incoder.protoc;
+
+option optimize_for = SPEED;
+option java_package = "org.incoder.protobuf";
+option java_outer_classname = "HelloProtobuf";
+
+
+message World {
+    required string name = 1;
+    optional string address = 2;
+}

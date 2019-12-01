@@ -1,0 +1,42 @@
+syntax = "proto2";
+
+package org.incoder.protoc;
+
+option optimize_for = SPEED;
+option java_package = "org.incoder.netty.protobuf";
+option java_outer_classname = "NettyMultipleDataInfo";
+
+
+message MessageInfo {
+
+    // 消息列表枚举
+    enum DataType {
+        PersonType = 1;
+        DogType = 2;
+        CatType = 3;
+    }
+
+    required DataType message_type = 1;
+
+    // 消息体
+    oneof message_body {
+        Person person = 2;
+        Dog dog = 3;
+        Cat cat = 4;
+    }
+
+}
+
+message Person {
+    optional string name = 1;
+    optional int32 age = 2;
+}
+message Dog {
+    optional string name = 1;
+    optional string city = 2;
+}
+
+message Cat {
+    optional string name = 1;
+    optional string breed = 2;
+}

@@ -12,19 +12,34 @@
 * JDK Version 1.8.0_152
 * DevTool：IDEA
 * Netty Version：4.1.25.Final
+* Protobuf Version：3.10.0
+* Thrift Version：0.13.0
 
 > RoadMap 和详细知识笔记请查看[Wiki](https://github.com/RootCluster/rc_netty/wiki)
 
 项目结构，请按照如下 **顺序进行** 学习
 
 ```
-rc-cluster-netty
-    ├── http            # 1. 基于 HTTP 的 netty 应用
-    ├── socket          # 2. 基于 socket 的 netty 应用
-    ├── chat            # 3. 
-    ├── heartbeat       # 4. 
-    ├── websocket       # 4. 
-    └── ……
+rc-cluster-netty/
+    ├── main/java/org/incoder
+    │   ├── netty
+    │   │   ├── heartbeat       # netty 中的心跳机制
+    │   │   ├── http            # 基于 HTTP 的 netty 应用
+    │   │   ├── protobuf        # 基于 protobuf 的 netty 应用
+    │   │   ├── socket          # 基于 socket 的 netty 应用
+    │   │   └── websocket       # 基于 websocket 的 netty 应用
+    │   ├── protobuf            # 使用 protobuf 的示例
+    │   └── thrift              
+    │       ├── java
+    │       │   ├── generate    # thrift 的 Java 自动模板代码
+    │       │   └── ……          # 相关示例
+    │       └── py
+    │           ├── generate    # thrift 的 Python 自动模板代码
+    │           └── ……          # 相关示例
+    ├── protoc-idl/             # protoc 的描述定义文件
+    ├── thrift-idl/             # thrift 的描述定义文件
+    └── webapp/
+        └── websocket.html      # 使用 websocket 网页
 ```
 
 ## License

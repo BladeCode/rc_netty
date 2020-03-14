@@ -40,7 +40,7 @@
 
     if (window.WebSocket) {
         // 连接 websocket
-        socket = new WebSocket("ws://localhost:4096/websocket");
+        socket = new WebSocket("ws://localhost:9097/websocket");
 
         socket.onmessage = function (event) {
             const ta = document.getElementById("responseText");

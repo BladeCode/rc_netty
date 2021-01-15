@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package org.incoder.grpc.gen;
+
+option java_package = "org.incoder.grpc.gen";
+option java_outer_classname = "GrpcHello";
+option java_multiple_files = true;
+
+service GrpcHelloService{
+  // 可参考官方提供的四种模式：https://grpc.io/docs/tutorials/basic/java/#defining-the-service
+  //  rpc SayHelloForGrpcType(stream GrpcRequest) returns (stream GrpcResponse){}
+  rpc SayHelloForGrpcType(GrpcRequest) returns (GrpcResponse){}
+}
+
+message GrpcRequest{
+  string type = 1;
+}
+
+message GrpcResponse{
+  string sayResult = 1;
+}

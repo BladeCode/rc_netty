@@ -6,7 +6,6 @@ option optimize_for = SPEED;
 option java_package = "org.incoder.netty.protobuf";
 option java_outer_classname = "NettyDataInfo";
 
-
 message Person {
     required string name = 1;
     optional int32 age = 2;

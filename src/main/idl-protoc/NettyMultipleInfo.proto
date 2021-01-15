@@ -6,7 +6,6 @@ option optimize_for = SPEED;
 option java_package = "org.incoder.netty.protobuf";
 option java_outer_classname = "NettyMultipleDataInfo";
 
-
 message MessageInfo {
 
     // 消息列表枚举
